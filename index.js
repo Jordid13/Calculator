@@ -1,151 +1,134 @@
-const number = document.createElement("p");
-let userNumber = "";
+const numberDisplayed = document.createElement("p");
+
+let userExpression = "";
+let resultState = 0;
+
+const clearUserExpression = () => {
+  userExpression = "";
+};
+
+const updateScreen = (userInput) => {
+  const currUserNumber = userInput.target.id;
+  const lastValue = userExpression.slice(-1);
+  if (resultState) {
+  }
+  if (
+    (!isNaN(currUserNumber) && numberDisplayed.textContent === "0") ||
+    (!isNaN(currUserNumber) && resultState)
+  ) {
+    numberDisplayed.textContent = currUserNumber;
+    resultState = 0;
+  } else if (!isNaN(currUserNumber)) {
+    numberDisplayed.textContent += currUserNumber;
+  } else if (
+    isNaN(currUserNumber) &&
+    !isNaN(lastValue) &&
+    lastValue !== currUserNumber
+  ) {
+    if (lastValue && isNaN(currUserNumber)) {
+      numberDisplayed.textContent += currUserNumber;
+    }
+  }
+};
+
+const inputHandler = (userInput) => {
+  const currUserNumber = userInput.target.id;
+  const lastValue = userExpression.slice(-1);
+
+  if (!isNaN(currUserNumber) && lastValue !== 0)
+    userExpression += currUserNumber;
+  if (
+    isNaN(currUserNumber) &&
+    !isNaN(lastValue) &&
+    lastValue !== currUserNumber
+  ) {
+    if (lastValue && isNaN(currUserNumber)) {
+      userExpression += currUserNumber;
+    }
+  }
+};
+
+const operationsHandler = () => {
+  const arr = strToArr(userExpression);
+  const lastValue = userExpression.slice(-1);
+  if (arr.length >= 3 && !isNaN(lastValue)) {
+    const postFix = infixToPostFix(arr);
+    const result = resolvePostFix(postFix);
+    numberDisplayed.textContent = result;
+    resultState = result;
+    clearUserExpression();
+  }
+};
+
 const buildCalculator = () => {
-  //Handle user clicks - logs them in the calculator screen and keep track of them in the userNumberArray
-  const printNumber = (userInput) => {
-    // Keeps track of the userInput in the userNumber variable
-    const userDigits = userInput.srcElement.id;
-    // Prints the digits to the calc screen
-    if (number.textContent === "0" || number.textContent === "Error") {
-      if (isNaN(userNumber)) {
-        userNumber = userDigits;
-        number.textContent = userDigits;
-      } else {
-        userNumber += userDigits;
-        number.textContent = userDigits;
-      }
-    } else {
-      userNumber += userDigits;
-      number.textContent += userDigits;
-    }
-  };
-
-  //Clears Calculator Screen (used only by the clear button)
-  const clearScreen = (userInput) => {
-    number.textContent = "0"; // Sets screen value to 0
-    userNumber = ""; // Removes all items in the array if there were any
-  };
-
   // Retrieves the calculator screen element
-  const getScreen = document.querySelector("#screen");
-
-  // Create a paragraph to store 0
-  number.style.color = "white";
-  number.textContent = 0;
-  getScreen.appendChild(number);
-  // Build buttons for the calculator
-  // Retrieves the numPad element
+  const display = document.querySelector("#screen");
+  // Store numbers in a paragraph
+  numberDisplayed.textContent = 0;
+  // Append the 0 to the display
+  display.appendChild(numberDisplayed);
+  // ---- Retrieves the numPad element for the buttons -----
   const getNumPad = document.querySelector("#numPad");
-  // Create symbol buttons and append them to the numPad div
-  const symbolArr = ["+", "-", "*", "/"];
-  for (let i = 0; i < symbolArr.length; i++) {
-    let button = document.createElement("button");
-    if (symbolArr[i] === "*") {
-      button.textContent = "×";
-    } else if (symbolArr[i] === "/") {
-      button.textContent = "÷";
-    } else {
-      button.textContent = symbolArr[i];
-    }
-    button.id = symbolArr[i];
-    button.classList = "symbol";
-    // Listens for clicks
-    button.addEventListener("click", printNumber);
-    // Appends
-    getNumPad.appendChild(button);
-  }
-  // Create number buttons and append them to the numPad div
-  const numberArr = [6, 7, 8, 9, 5, 4, 3, 2, 1, 0]; // This should be divided in three rows of three items each
-  for (let i = 0; i < numberArr.length; i++) {
-    let button = document.createElement("button");
-    button.textContent = numberArr[i];
-    button.id = numberArr[i];
-    button.classList = "num";
-    // Listens for clicks
-    button.addEventListener("click", printNumber);
-    // Appends
-    getNumPad.appendChild(button);
-  }
-
-  //Create equal button
-  let equalButton = document.createElement("button");
-  equalButton.textContent = "=";
-  equalButton.id = "equal";
-  equalButton.classList = "equal-button";
-  getNumPad.appendChild(equalButton);
-
-  //Create reset button
-  let resetButton = document.createElement("button");
-  resetButton.textContent = "C";
-  resetButton.id = "clear";
-  resetButton.classList = "reset-button";
-  resetButton.addEventListener("click", clearScreen);
-  getNumPad.appendChild(resetButton);
-};
-
-const handleUserInput = () => {
-  // Retrieves equal button
-  const equalButton = document.getElementById("equal");
-  //   const currentResult = 0; // WIP
-  //   const sum = () => {
-  //     const sum = userNumber
-  //       .split("+")
-  //       .map((element) => Number(element))
-  //       .reduce((acc, curr) => acc + curr);
-  //     number.textContent = sum;
-  //   };
-
-  //   const subtraction = () => {
-  //     const sub = userNumber
-  //       .split("-")
-  //       .map((element) => Number(element))
-  //       .reduce((acc, curr) => acc - curr);
-  //     number.textContent = sub;
-  //   };
-
-  //   const multiplication = () => {
-  //     const mul = userNumber
-  //       .split("*")
-  //       .map((element) => Number(element))
-  //       .reduce((acc, curr) => acc * curr);
-  //     number.textContent = mul;
-  //   };
-
-  //   const division = () => {
-  //     const mul = userNumber
-  //       .split("/")
-  //       .map((element) => Number(element))
-  //       .reduce((acc, curr) => acc / curr);
-  //     number.textContent = mul;
-  //   };
-
-  //   const calculations = () => {
-  //     if (userNumber.includes("+")) sum();
-  //     if (userNumber.includes("-")) subtraction();
-  //     if (userNumber.includes("*")) multiplication();
-  //     if (userNumber.includes("/")) division();
-  //   };
-
-  const calculations = () => {
-    try {
-      eval(userNumber);
-    } catch (error) {
-      if (error instanceof SyntaxError) {
-        number.textContent = `Error`;
+  // ---- Create Buttons for Operators -----
+  const operatorButtons = () => {
+    const symbolArr = ["+", "-", "*", "/"];
+    for (let i = 0; i < symbolArr.length; i++) {
+      let button = document.createElement("button");
+      if (symbolArr[i] === "*") {
+        button.textContent = "×";
+      } else if (symbolArr[i] === "/") {
+        button.textContent = "÷";
+      } else {
+        button.textContent = symbolArr[i];
       }
-    } finally {
-      number.textContent = eval(userNumber);
-      userNumber = eval(userNumber);
+      button.id = symbolArr[i];
+      button.classList = "symbol";
+      button.addEventListener("click", updateScreen);
+      button.addEventListener("click", inputHandler);
+      getNumPad.appendChild(button);
     }
   };
 
-  // Listens for clicking and calls the calculations function
-  equalButton.addEventListener("click", calculations);
+  // ---- Create Buttons for Numbers -----
+  const numButtons = () => {
+    const numberArr = [9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
+    for (let i = 0; i < numberArr.length; i++) {
+      let button = document.createElement("button");
+      button.textContent = numberArr[i];
+      button.id = numberArr[i];
+      button.classList = "num";
+      button.addEventListener("click", updateScreen);
+      button.addEventListener("click", inputHandler);
+      getNumPad.appendChild(button);
+    }
+  };
+
+  // ---- Create Equal Button -----
+  const equalButton = () => {
+    const equalButton = document.createElement("button");
+    equalButton.textContent = "=";
+    equalButton.id = "equal";
+    equalButton.classList = "equal-button";
+    getNumPad.appendChild(equalButton);
+    equalButton.addEventListener("click", operationsHandler);
+  };
+
+  // ---- Create Reset Button -----
+  const clearButton = () => {
+    const resetButton = document.createElement("button");
+    resetButton.textContent = "C";
+    resetButton.id = "clear";
+    resetButton.classList = "reset-button";
+    resetButton.addEventListener("click", () => {
+      clearUserExpression();
+      numberDisplayed.textContent = 0;
+    });
+    getNumPad.appendChild(resetButton);
+  };
+  operatorButtons();
+  numButtons();
+  equalButton();
+  clearButton();
 };
 
-const main = () => {
-  buildCalculator();
-  handleUserInput();
-};
-
-main();
+buildCalculator();

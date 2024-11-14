@@ -5,21 +5,39 @@
   font-family: Funnel Display;
 }
 
+body {
+  background: radial-gradient(
+    circle at center,
+    rgb(0, 0, 0) 0.9px,
+    transparent 0
+  );
+  background-size: 1rem 1rem;
+  background-repeat: round;
+}
+
+p {
+  color: white;
+  word-wrap: break-word;
+  font-size: 35px;
+}
+
 h1 {
   text-align: center;
   margin: 10px 10px 20px 10px;
+  font-size: 70px;
 }
 
 #calculator {
   display: flex;
   flex-direction: column;
-  width: 180px;
+  width: 300px;
+
   margin-left: auto;
   margin-right: auto;
-  padding: 10px;
+  padding: 15px;
   background-color: #363537;
   /* Gap between screen and numpad */
-  gap: 5px;
+  gap: 10px;
   /* Border Radius */
   border-radius: 20px;
   /* Border Shadow */
@@ -50,8 +68,9 @@ h1 {
 .symbol,
 .reset-button,
 .equal-button {
-  width: 30px;
-  height: 30px;
+  width: 50px;
+  height: 50px;
+  font-size: 25px;
   border-radius: 50px;
   border-style: none;
   transition: background-color 80ms linear 3ms;
@@ -67,13 +86,23 @@ h1 {
   background-color: #616c94;
 }
 
+.symbol:hover {
+  background-color: #cf692f;
+}
+
 .symbol {
   background-color: #ed7d3a;
   color: white;
 }
 
 .reset-button {
-  background-color: #f0f4ef;
+  background-color: #ef2d56;
+  color: white;
+}
+
+.reset-button:hover {
+  background-color: white;
+  color: #ef2d56;
 }
 
 .equal-button {
@@ -81,7 +110,12 @@ h1 {
   color: white;
 }
 
-#clear {
+.equal-button:hover {
+  background-color: white;
+  color: #2fbf71;
+}
+
+/* #clear {
   background-color: #ef2d56;
   color: white;
-}
+} */
