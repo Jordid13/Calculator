@@ -2,12 +2,12 @@ const strToArr = (str) => {
   let currNum = "";
   const output = [];
   for (let i = 0; i < str.length; i++) {
-    if (isNaN(str[i])) {
+    if (isNaN(str[i]) && str[i] !== ".") {
       output.push(currNum);
       currNum = "";
       output.push(str[i]);
     }
-    if (!isNaN(str[i])) {
+    if (!isNaN(str[i]) || str[i] === ".") {
       currNum += str[i];
     }
   }
@@ -64,7 +64,7 @@ const resolvePostFix = (postFix) => {
           if (result === Math.floor(result)) {
             output.push(result);
           } else {
-            output.push(result.toFixed(2));
+            output.push(result.toFixed(3));
           }
           break;
         case "+":

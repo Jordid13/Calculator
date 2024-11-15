@@ -30,11 +30,10 @@ h1 {
 #calculator {
   display: flex;
   flex-direction: column;
-  width: 300px;
-
   margin-left: auto;
   margin-right: auto;
   padding: 15px;
+  width: 250px;
   background-color: #363537;
   /* Gap between screen and numpad */
   gap: 10px;
@@ -54,20 +53,11 @@ h1 {
   padding: 5px 10px;
 }
 
-#numPad {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 5px;
-  background-color: #222222;
-  padding: 10px;
-  border-radius: 20px;
-}
-
 .num,
 .symbol,
 .reset-button,
-.equal-button {
+.equal-button,
+.dot-button {
   width: 50px;
   height: 50px;
   font-size: 25px;
@@ -76,8 +66,50 @@ h1 {
   transition: background-color 80ms linear 3ms;
 }
 
+#numPad {
+  display: inline-flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+#operators {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  justify-content: flex-start;
+}
+
+#numbers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+}
+
+#options {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.symbol {
+  background-color: #ed7d3a;
+  color: white;
+}
+
+.symbol:hover {
+  background-color: #cf692f;
+}
+
 /* Assigns different colors for the buttons */
+.dot-button {
+  background-color: #49516f;
+  width: 50px;
+  color: white;
+}
+
 .num {
+  flex-direction: row;
   background-color: #49516f;
   color: white;
 }
@@ -86,17 +118,9 @@ h1 {
   background-color: #616c94;
 }
 
-.symbol:hover {
-  background-color: #cf692f;
-}
-
-.symbol {
-  background-color: #ed7d3a;
-  color: white;
-}
-
 .reset-button {
   background-color: #ef2d56;
+  width: 105px;
   color: white;
 }
 
@@ -108,6 +132,7 @@ h1 {
 .equal-button {
   background-color: #2fbf71;
   color: white;
+  width: 105px;
 }
 
 .equal-button:hover {
